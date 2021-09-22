@@ -1,4 +1,4 @@
-# Cartman-kai Thrift
+# Cartman-kai homebrew-thrift
 
 Some old version of thrift Formulas which no longer included in homebrew-core.
 These old versions of Formulas need to be compiled, and no bottle is provided.
@@ -15,13 +15,17 @@ Install thrift@0.11
 brew tap cartman-kai/thrift
 brew install thrift@0.11
 ```
-## Include Versions
+## support versions
 
 * thrift@0.10
 * thrift@0.11
 * thrift@0.12
 * thrift@0.13
+* thrift@0.14 (0.14.2)
 
+## Changlog
+
+2021-09-22 copy thrift@0.14 from homebrew-core/Formal (delete bottle) 
 
 ## Documentation
 
