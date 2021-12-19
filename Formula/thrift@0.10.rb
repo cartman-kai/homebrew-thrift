@@ -11,7 +11,7 @@ class ThriftAT010 < Formula
   end
 
   head do
-    url "https://github.com/apache/thrift.git"
+    url "https://github.com/apache/thrift.git", branch: "0.10.0"
   end
 
   depends_on "autoconf" => :build
@@ -31,7 +31,7 @@ class ThriftAT010 < Formula
       --disable-tests
       --prefix=#{prefix}
       --libdir=#{lib}
-      --with-boost=#{Formula["boost"].opt_prefix}
+      --with-boost=no
       --with-openssl=#{Formula["openssl@1.1"].opt_prefix}
       --without-erlang
       --without-haskell
