@@ -23,7 +23,7 @@ brew install thrift@0.11
 * thrift@0.13
 * thrift@0.14 (0.14.2)
 
-## Changlog
+## Changelog
 
 * 2021-12-19 thrift@0.10 change configure args, default **not support C++ Complier Library**. 
 
@@ -63,7 +63,7 @@ thrift default enable support languages, so modify without-\<language\> line lik
 ```
 
 
-## Know Issues
+## Issues
 
 thrift@0.10 --with-boost On Linux Or macOS Monterey complier error.
 
