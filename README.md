@@ -22,8 +22,12 @@ brew install thrift@0.11
 * thrift@0.12
 * thrift@0.13
 * thrift@0.14 (0.14.2)
+* thrift@0.15
+* thrift@0.16
 
 ## Changelog
+
+* 2022-09-23 add thrift@0.15 thrift@0.16, fix thrift@0.14 dependencies.
 
 * 2021-12-19 thrift@0.10 change configure args, default **not support C++ Complier Library**. 
 
