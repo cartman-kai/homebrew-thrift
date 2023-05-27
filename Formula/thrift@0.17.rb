@@ -4,8 +4,7 @@ class ThriftAT017 < Formula
   license "Apache-2.0"
 
   stable do
-    url "https://www.apache.org/dyn/closer.lua?path=thrift/0.17.0/thrift-0.17.0.tar.gz"
-    mirror "https://archive.apache.org/dist/thrift/0.17.0/thrift-0.17.0.tar.gz"
+    url "https://archive.apache.org/dist/thrift/0.17.0/thrift-0.17.0.tar.gz"
     sha256 "b272c1788bb165d99521a2599b31b97fa69e5931d099015d91ae107a0b0cc58f"
 
     # Fix -flat_namespace being used on Big Sur and later.
@@ -28,8 +27,8 @@ class ThriftAT017 < Formula
   depends_on "bison" => :build
   depends_on "boost" => [:build, :test]
   depends_on "libtool" => :build
-  depends_on "openssl@1.1"
   depends_on "pkg-config" => :build
+  depends_on "openssl@1.1"
   uses_from_macos "zlib"
 
   def install
@@ -76,7 +75,7 @@ class ThriftAT017 < Formula
   end
 
   test do
-    (testpath/"test.thrift").write <<~'EOS'
+    (testpath/"test.thrift").write <<~EOS
       service MultiplicationService {
         i32 multiply(1:i32 x, 2:i32 y),
       }
