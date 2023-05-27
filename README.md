@@ -15,6 +15,7 @@ Install thrift@0.11
 brew tap cartman-kai/thrift
 brew install thrift@0.11
 ```
+
 ## support versions
 
 * thrift@0.10(default without c++ library)
@@ -27,6 +28,8 @@ brew install thrift@0.11
 * thrift@0.17
 
 ## Changelog
+
+* 2023-05-27 fix url can't download issue.(replace url to archive.apache.org)
 
 * 2023-03-09 copy thrift@0.17 from homebrew-core/Formal (delete bottle) 
 

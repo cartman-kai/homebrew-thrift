@@ -1,8 +1,7 @@
 class ThriftAT010 < Formula
   desc "Framework for scalable cross-language services development"
   homepage "https://thrift.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=thrift/0.10.0/thrift-0.10.0.tar.gz"
-  mirror "https://archive.apache.org/dist/thrift/0.10.0/thrift-0.10.0.tar.gz"
+  url "https://archive.apache.org/dist/thrift/0.10.0/thrift-0.10.0.tar.gz"
   sha256 "2289d02de6e8db04cbbabb921aeb62bfe3098c4c83f36eec6c31194301efa10b"
   license "Apache-2.0"
 
@@ -58,7 +57,7 @@ class ThriftAT010 < Formula
   end
 
   test do
-    (testpath/"test.thrift").write <<~'EOS'
+    (testpath/"test.thrift").write <<~EOS
       service MultiplicationService {
         i32 multiply(1:i32 x, 2:i32 y),
       }
