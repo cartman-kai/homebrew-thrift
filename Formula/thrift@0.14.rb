@@ -18,8 +18,8 @@ class ThriftAT014 < Formula
   depends_on "bison" => :build
   depends_on "boost" => [:build, :test]
   depends_on "libtool" => :build
-  depends_on "openssl@1.1"
   depends_on "pkg-config" => :build
+  depends_on "openssl@1.1"
 
   def install
     system "./bootstrap.sh" unless build.stable?
