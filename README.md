@@ -26,8 +26,11 @@ brew install thrift@0.11
 * thrift@0.15
 * thrift@0.16
 * thrift@0.17
+* thrift@0.18
 
 ## Changelog
+
+* 2023-10-07 copy thrift@0.18 from homebrew-core/Formal (delete bottle)
 
 * 2023-05-27 fix url can't download issue.(replace url to archive.apache.org)
 
