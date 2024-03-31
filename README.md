@@ -63,19 +63,19 @@ brew edit cartman-kai/thrift/thrift@0.11
 thrift default enable support languages, so modify without-\<language\> line like this.
 
 ```ruby
-    args = %W[
-      --disable-debug
-      --disable-tests
-      --prefix=#{prefix}
-      --libdir=#{lib}
-      --with-openssl=#{Formula["openssl@1.1"].opt_prefix}
-      --without-erlang
-      --without-haskell
-      --without-java
-      --without-perl
-      --without-ruby
-      --without-swift
-    ]
+args = %W[
+  --disable-debug
+  --disable-tests
+  --prefix=#{prefix}
+  --libdir=#{lib}
+  --with-openssl=#{Formula["openssl@1.1"].opt_prefix}
+  --without-erlang
+  --without-haskell
+  --without-java
+  --without-perl
+  --without-ruby
+  --without-swift
+]
 ```
 
 
