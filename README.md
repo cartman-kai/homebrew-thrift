@@ -27,8 +27,11 @@ brew install thrift@0.11
 * thrift@0.16
 * thrift@0.17
 * thrift@0.18
+* thrift@0.19
 
 ## Changelog
+
+* 2024-03-31 copy thrift@0.19 from homebrew-core/Formal (delete bottle)
 
 * 2023-10-07 copy thrift@0.18 from homebrew-core/Formal (delete bottle)
 
@@ -60,19 +63,19 @@ brew edit cartman-kai/thrift/thrift@0.11
 thrift default enable support languages, so modify without-\<language\> line like this.
 
 ```ruby
-    args = %W[
-      --disable-debug
-      --disable-tests
-      --prefix=#{prefix}
-      --libdir=#{lib}
-      --with-openssl=#{Formula["openssl@1.1"].opt_prefix}
-      --without-erlang
-      --without-haskell
-      --without-java
-      --without-perl
-      --without-ruby
-      --without-swift
-    ]
+args = %W[
+  --disable-debug
+  --disable-tests
+  --prefix=#{prefix}
+  --libdir=#{lib}
+  --with-openssl=#{Formula["openssl@1.1"].opt_prefix}
+  --without-erlang
+  --without-haskell
+  --without-java
+  --without-perl
+  --without-ruby
+  --without-swift
+]
 ```
 
 
