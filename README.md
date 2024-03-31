@@ -27,8 +27,11 @@ brew install thrift@0.11
 * thrift@0.16
 * thrift@0.17
 * thrift@0.18
+* thrift@0.19
 
 ## Changelog
+
+* 2024-03-31 copy thrift@0.19 from homebrew-core/Formal (delete bottle)
 
 * 2023-10-07 copy thrift@0.18 from homebrew-core/Formal (delete bottle)
 
