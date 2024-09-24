@@ -18,6 +18,7 @@ brew install thrift@0.11
 
 ## support versions
 
+* thrift@0.9 (0.9.3.1)
 * thrift@0.10(default without c++ library)
 * thrift@0.11
 * thrift@0.12
@@ -28,22 +29,25 @@ brew install thrift@0.11
 * thrift@0.17
 * thrift@0.18
 * thrift@0.19
+* thrift@0.20
 
 ## Changelog
 
-* 2024-07-12 add thrift@0.9, copy from homebrew-core/Formal (delete bottle)
+* 2024-09-24 add thrift@0.20.
 
-* 2024-03-31 copy thrift@0.19 from homebrew-core/Formal (delete bottle)
+* 2024-07-12 add thrift@0.9, copy from homebrew-core/Formal (delete bottle).
 
-* 2023-10-07 copy thrift@0.18 from homebrew-core/Formal (delete bottle)
+* 2024-03-31 copy thrift@0.19 from homebrew-core/Formal (delete bottle).
 
-* 2023-05-27 fix url can't download issue.(replace url to archive.apache.org)
+* 2023-10-07 copy thrift@0.18 from homebrew-core/Formal (delete bottle).
 
-* 2023-03-09 copy thrift@0.17 from homebrew-core/Formal (delete bottle) 
+* 2023-05-27 fix url can't download issue.(replace url to archive.apache.org).
+
+* 2023-03-09 copy thrift@0.17 from homebrew-core/Formal (delete bottle).
 
 * 2022-09-23 add thrift@0.15 thrift@0.16, fix thrift@0.14 dependencies.
 
-* 2021-12-19 thrift@0.10 change configure args, default **not support C++ Complier Library**. 
+* 2021-12-19 thrift@0.10 change configure args, default **not support C++ Complier Library**.
 
 * 2021-09-22 copy thrift@0.14 from homebrew-core/Formal (delete bottle) 
 
