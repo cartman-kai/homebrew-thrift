@@ -33,6 +33,8 @@ brew install thrift@0.11
 
 ## Changelog
 
+* 2024-09-30 **Fixed Patch URL issue**. Affected versions: 0.15 - 0.19. Verified successful installation and usage on macOS Ventura (13.6.9).
+
 * 2024-09-24 add thrift@0.20.
 
 * 2024-07-12 add thrift@0.9, copy from homebrew-core/Formal (delete bottle).
