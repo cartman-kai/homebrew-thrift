@@ -19,7 +19,7 @@ class ThriftAT014 < Formula
   depends_on "boost" => [:build, :test]
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
 
   def install
     system "./bootstrap.sh" unless build.stable?
@@ -29,7 +29,7 @@ class ThriftAT014 < Formula
       --disable-tests
       --prefix=#{prefix}
       --libdir=#{lib}
-      --with-openssl=#{Formula["openssl@1.1"].opt_prefix}
+      --with-openssl=#{Formula["openssl@3"].opt_prefix}
       --without-erlang
       --without-haskell
       --without-java

@@ -23,7 +23,7 @@ class ThriftAT017 < Formula
   depends_on "boost" => [:build, :test]
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
   uses_from_macos "zlib"
 
   def install
@@ -34,7 +34,7 @@ class ThriftAT017 < Formula
       --disable-tests
       --prefix=#{prefix}
       --libdir=#{lib}
-      --with-openssl=#{Formula["openssl@1.1"].opt_prefix}
+      --with-openssl=#{Formula["openssl@3"].opt_prefix}
       --without-java
       --without-kotlin
       --without-python
