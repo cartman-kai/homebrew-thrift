@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Usage and contribution guidelines / 使用与贡献说明
+    url: https://github.com/cartman-kai/homebrew-thrift/blob/main/CONTRIBUTING.md
+    about: Read the local validation and contribution instructions before opening an issue. / 提交 issue 前，请先阅读本地验证和贡献说明。

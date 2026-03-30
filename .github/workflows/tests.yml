@@ -1,0 +1,33 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  audit-and-test:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Tap repository
+        run: brew tap cartman-kai/thrift "${GITHUB_WORKSPACE}"
+
+      - name: Check Ruby syntax
+        run: ruby -c Formula/*.rb
+
+      - name: Audit formulae
+        run: |
+          for formula in Formula/*.rb; do
+            brew audit --strict --formula "$formula"
+          done
+
+      - name: Build and test latest formula
+        run: |
+          brew install --build-from-source ./Formula/thrift@0.21.rb
+          brew test thrift@0.21
