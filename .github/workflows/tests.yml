@@ -24,7 +24,8 @@ jobs:
       - name: Audit formulae
         run: |
           for formula in Formula/*.rb; do
-            brew audit --strict --formula "$formula"
+            name="$(basename "$formula" .rb)"
+            brew audit --strict --formula "cartman-kai/thrift/${name}"
           done
 
       - name: Build and test latest formula
