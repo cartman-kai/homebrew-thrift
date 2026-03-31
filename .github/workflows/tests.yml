@@ -16,7 +16,7 @@ jobs:
         uses: Homebrew/actions/setup-homebrew@master
 
       - name: Tap repository
-        run: brew tap cartman-kai/thrift "${GITHUB_WORKSPACE}"
+        run: brew tap --custom-remote cartman-kai/thrift "${GITHUB_WORKSPACE}"
 
       - name: Check Ruby syntax
         run: ruby -c Formula/*.rb
