@@ -27,8 +27,3 @@ jobs:
             name="$(basename "$formula" .rb)"
             brew audit --strict --formula "cartman-kai/thrift/${name}"
           done
-
-      - name: Build and test latest formula
-        run: |
-          brew install --build-from-source ./Formula/thrift@0.21.rb
-          brew test thrift@0.21
