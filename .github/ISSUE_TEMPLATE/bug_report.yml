@@ -1,0 +1,65 @@
+name: Bug report / 问题反馈
+description: Report an install, build, patch, checksum, or source URL issue for a formula in this tap. / 报告此 tap 中 formula 的安装、构建、补丁、校验和或源码地址问题。
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: input
+    id: formula
+    attributes:
+      label: Formula / 公式名
+      description: Which formula is affected? / 受影响的 formula 是哪个？
+      placeholder: thrift@0.21
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Homebrew version / Homebrew 版本
+      description: Output of `brew --version` / 请填写 `brew --version` 的输出
+      placeholder: Homebrew 4.x.x
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating system / 操作系统
+      description: macOS or Linux distribution and version / macOS 或 Linux 发行版及版本
+      placeholder: macOS 14.7 / Ubuntu 24.04
+    validations:
+      required: true
+
+  - type: textarea
+    id: command
+    attributes:
+      label: Command run / 执行的命令
+      description: Paste the full command that failed / 请粘贴失败时执行的完整命令
+      placeholder: brew install --build-from-source thrift@0.21
+    validations:
+      required: true
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Error output / 错误输出
+      description: Paste the relevant error log or failing output / 请粘贴关键错误日志或失败输出
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: brew_config
+    attributes:
+      label: brew config / 环境信息
+      description: Paste the output of `brew config` / 请粘贴 `brew config` 的输出
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional context / 其他补充信息
+      description: Include patch URL issues, upstream archive problems, or anything else that may help reproduce the problem. / 可补充 patch URL 问题、上游归档地址问题，或其他有助于复现的信息。

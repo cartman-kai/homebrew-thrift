@@ -1,0 +1,29 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  audit-and-test:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Tap repository
+        run: brew tap --custom-remote cartman-kai/thrift "${GITHUB_WORKSPACE}"
+
+      - name: Check Ruby syntax
+        run: ruby -c Formula/*.rb
+
+      - name: Audit formulae
+        run: |
+          for formula in Formula/*.rb; do
+            name="$(basename "$formula" .rb)"
+            brew audit --strict --formula "cartman-kai/thrift/${name}"
+          done
