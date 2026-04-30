@@ -36,11 +36,12 @@ brew install thrift@0.11
 - `thrift@0.19`
 - `thrift@0.20`
 - `thrift@0.21`
+- `thrift@0.22`
 
 ## Maintenance Notes
 
-- Latest version in this tap: `thrift@0.21`.
-- Supported historical releases currently cover `thrift@0.9` through `thrift@0.21`.
+- Latest version in this tap: `thrift@0.22`.
+- Supported historical releases currently cover `thrift@0.9` through `thrift@0.22`.
 - Recent maintenance work focused on adding missing archived versions, fixing patch URLs, and switching old source downloads to `archive.apache.org`.
 - Older formulae are largely copied from `homebrew-core` history and adjusted for source builds without bottles.
 
