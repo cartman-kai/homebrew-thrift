@@ -36,11 +36,12 @@ brew install thrift@0.11
 - `thrift@0.19`
 - `thrift@0.20`
 - `thrift@0.21`
+- `thrift@0.22`
 
 ## 维护说明
 
-- 当前最新版本为 `thrift@0.21`。
-- 目前维护的历史版本范围为 `thrift@0.9` 到 `thrift@0.21`。
+- 当前最新版本为 `thrift@0.22`。
+- 目前维护的历史版本范围为 `thrift@0.9` 到 `thrift@0.22`。
 - 最近的维护重点主要是补齐历史版本、修复 patch URL，以及将旧版本源码地址切换到 `archive.apache.org`。
 - 大部分旧 formula 来自 `homebrew-core` 历史版本，并已调整为仅支持源码安装、不提供 bottle。
 
