@@ -19,21 +19,23 @@ class ThriftAT010 < Formula
   depends_on "libevent"
   depends_on "openssl@3"
 
-  # Fix -flat_namespace being used on Big Sur and later.
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/homebrew-core/1cf441a0/Patches/libtool/configure-big_sur.diff"
-    sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
-  end
-
   def install
-    system "./bootstrap.sh" unless build.stable?
+    if build.stable?
+      # Fix -flat_namespace being used on newer macOS releases.
+      inreplace "configure", "case ${MACOSX_DEPLOYMENT_TARGET-10.0},$host in",
+        "case ${MACOSX_DEPLOYMENT_TARGET},$host in"
+      inreplace "configure", "10.[012]*)", "10.[012],*|,*powerpc*)"
+      inreplace "configure", "10.*)", "*)"
+    else
+      system "./bootstrap.sh"
+    end
 
     args = %W[
       --disable-debug
       --disable-tests
       --prefix=#{prefix}
       --libdir=#{lib}
-      --with-boost=no
+      --with-boost=#{formula_opt_prefix("boost")}
       --with-openssl=#{formula_opt_prefix("openssl@3")}
       --without-erlang
       --without-haskell

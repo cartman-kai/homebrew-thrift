@@ -36,7 +36,7 @@ export PATH="$(brew --prefix thrift@0.11)/bin:$PATH"
 ## Supported Formulae
 
 - `thrift@0.9` (`0.9.3.1`)
-- `thrift@0.10` (built without the C++ library by default)
+- `thrift@0.10`
 - `thrift@0.11`
 - `thrift@0.12`
 - `thrift@0.13`
@@ -87,29 +87,6 @@ args = %W[
   --without-swift
 ]
 ```
-
-## Known Issue
-
-`thrift@0.10` may fail when built with Boost-based C++ support on Linux or on macOS Monterey.
-
-On Linux, the linker may fail to resolve `boost::math::signbit`:
-
-```text
-/usr/bin/ld: /tmp/thriftA0.10-20210726-11963-gdbcaw/thrift-0.10.0/lib/cpp/.libs/libthrift-0.10.0.so: undefined reference to `int boost::math::signbit<double>(double)'
-```
-
-On macOS Monterey, the generated code build may fail with a missing symbol:
-
-```text
-../../compiler/cpp/thrift --gen cpp -r ../../tutorial/tutorial.thrift
-dyld[90108]: symbol not found in flat namespace '_ZN5boost4math7signbitIdEEiT'
-make[3]: *** [gen-cpp/shared_types.cpp] Abort trap: 6
-make[2]: *** [all-recursive] Error 1
-make[1]: *** [all-recursive] Error 1
-make: *** [all] Error 2
-```
-
-This appears to be a toolchain or libtool compatibility issue. In practice, `thrift@0.10` is not recommended for C++ projects.
 
 ## Documentation
 
