@@ -16,6 +16,8 @@ class ThriftAT023 < Formula
     depends_on "pkgconf" => :build
   end
 
+  keg_only :versioned_formula
+
   depends_on "bison" => :build
   depends_on "boost" => [:build, :test]
   depends_on "openssl@3"
@@ -54,7 +56,7 @@ class ThriftAT023 < Formula
       --without-swift
     ]
 
-    ENV.cxx11 if ENV.compiler == :clang
+    ENV.append "CXXFLAGS", "-std=c++14"
 
     # Don't install extensions to /usr:
     ENV["PY_PREFIX"] = prefix
@@ -76,9 +78,9 @@ class ThriftAT023 < Formula
 
     system bin/"thrift", "-r", "--gen", "cpp", "test.thrift"
 
-    system ENV.cxx, "-std=c++11", "gen-cpp/MultiplicationService.cpp",
+    system ENV.cxx, "-std=c++14", "gen-cpp/MultiplicationService.cpp",
       "gen-cpp/MultiplicationService_server.skeleton.cpp",
-      "-I#{include}/include",
+      "-I#{include}",
       "-L#{lib}", "-lthrift"
   end
 end

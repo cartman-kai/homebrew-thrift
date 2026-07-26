@@ -27,6 +27,12 @@ After tapping and trusting the repository, you can also install by formula name:
 brew install thrift@0.11
 ```
 
+All formulae are keg-only so that multiple Thrift versions can coexist. Add the selected version to `PATH` when needed:
+
+```bash
+export PATH="$(brew --prefix thrift@0.11)/bin:$PATH"
+```
+
 ## Supported Formulae
 
 - `thrift@0.9` (`0.9.3.1`)
@@ -51,7 +57,7 @@ brew install thrift@0.11
 - Supported historical releases currently cover `thrift@0.9` through `thrift@0.23`.
 - Recent maintenance work focused on adding missing archived versions, fixing patch URLs, and switching old source downloads to `archive.apache.org`.
 - Older formulae are largely copied from `homebrew-core` history and adjusted for source builds without bottles.
-- Pull requests are tested on Intel macOS, Apple Silicon macOS, and Linux.
+- Changed formulae are built from source on Apple Silicon macOS. Newly added formulae are also tested on Intel macOS and Linux.
 
 ## Customizing Language Support
 

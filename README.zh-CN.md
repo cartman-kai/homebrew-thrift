@@ -27,6 +27,12 @@ brew install cartman-kai/thrift/<formula>
 brew install thrift@0.11
 ```
 
+所有 formula 均为 keg-only，以便多个 Thrift 版本共存。需要使用某个版本时，将其加入 `PATH`：
+
+```bash
+export PATH="$(brew --prefix thrift@0.11)/bin:$PATH"
+```
+
 ## 支持的 Formula
 
 - `thrift@0.9` (`0.9.3.1`)
@@ -51,7 +57,7 @@ brew install thrift@0.11
 - 目前维护的历史版本范围为 `thrift@0.9` 到 `thrift@0.23`。
 - 最近的维护重点主要是补齐历史版本、修复 patch URL，以及将旧版本源码地址切换到 `archive.apache.org`。
 - 大部分旧 formula 来自 `homebrew-core` 历史版本，并已调整为仅支持源码安装、不提供 bottle。
-- Pull Request 会在 Intel macOS、Apple Silicon macOS 和 Linux 上测试。
+- 修改过的 formula 会在 Apple Silicon macOS 上从源码构建；新增 formula 还会在 Intel macOS 和 Linux 上测试。
 
 ## 自定义语言支持
 

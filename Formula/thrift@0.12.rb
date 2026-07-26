@@ -4,12 +4,11 @@ class ThriftAT012 < Formula
   url "https://www.apache.org/dyn/closer.lua?path=thrift/0.12.0/thrift-0.12.0.tar.gz"
   mirror "https://archive.apache.org/dist/thrift/0.12.0/thrift-0.12.0.tar.gz"
   sha256 "c336099532b765a6815173f62df0ed897528a9d551837d627c1f87fadad90428"
+  license "Apache-2.0"
 
   head "https://github.com/apache/thrift.git"
 
-  bottle do
-    rebuild 1
-  end
+  keg_only :versioned_formula
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -18,6 +17,12 @@ class ThriftAT012 < Formula
   depends_on "pkg-config" => :build
   depends_on "boost"
   depends_on "openssl"
+
+  # Fix -flat_namespace being used on Big Sur and later.
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/homebrew-core/1cf441a0/Patches/libtool/configure-big_sur.diff"
+    sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
+  end
 
   def install
     system "./bootstrap.sh" unless build.stable?
@@ -38,7 +43,7 @@ class ThriftAT012 < Formula
       --without-ruby
     ]
 
-    ENV.cxx11 if ENV.compiler == :clang
+    ENV.append "CXXFLAGS", "-std=c++14"
 
     # Don't install extensions to /usr:
     ENV["PY_PREFIX"] = prefix

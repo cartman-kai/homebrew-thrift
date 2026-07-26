@@ -5,9 +5,7 @@ class ThriftAT09 < Formula
   sha256 "1f7ca02d88a603f2845b2c7abcab74f8107dd7285056284d65241eb7965e143c"
   license "Apache-2.0"
 
-  bottle do
-    rebuild 1
-  end
+  keg_only :versioned_formula
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -45,7 +43,7 @@ class ThriftAT09 < Formula
       --disable-tutorial
     ]
 
-    ENV.cxx11 if ENV.compiler == :clang
+    ENV.append "CXXFLAGS", "-std=c++14"
 
     # Don't install extensions to /usr
     ENV["JAVA_PREFIX"] = pkgshare/"java"
