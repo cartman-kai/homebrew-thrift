@@ -1,13 +1,10 @@
 class ThriftAT020 < Formula
   desc "Framework for scalable cross-language services development"
   homepage "https://thrift.apache.org/"
+  url "https://www.apache.org/dyn/closer.lua?path=thrift/0.20.0/thrift-0.20.0.tar.gz"
+  mirror "https://archive.apache.org/dist/thrift/0.20.0/thrift-0.20.0.tar.gz"
+  sha256 "b5d8311a779470e1502c027f428a1db542f5c051c8e1280ccd2163fa935ff2d6"
   license "Apache-2.0"
-
-  stable do
-    url "https://www.apache.org/dyn/closer.lua?path=thrift/0.20.0/thrift-0.20.0.tar.gz"
-    mirror "https://archive.apache.org/dist/thrift/0.20.0/thrift-0.20.0.tar.gz"
-    sha256 "b5d8311a779470e1502c027f428a1db542f5c051c8e1280ccd2163fa935ff2d6"
-  end
 
   bottle do
     rebuild 1
@@ -35,7 +32,7 @@ class ThriftAT020 < Formula
       --disable-tests
       --prefix=#{prefix}
       --libdir=#{lib}
-      --with-openssl=#{Formula["openssl@3"].opt_prefix}
+      --with-openssl=#{formula_opt_prefix("openssl@3")}
       --without-java
       --without-kotlin
       --without-python

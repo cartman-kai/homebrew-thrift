@@ -51,6 +51,7 @@ brew install thrift@0.11
 - 目前维护的历史版本范围为 `thrift@0.9` 到 `thrift@0.23`。
 - 最近的维护重点主要是补齐历史版本、修复 patch URL，以及将旧版本源码地址切换到 `archive.apache.org`。
 - 大部分旧 formula 来自 `homebrew-core` 历史版本，并已调整为仅支持源码安装、不提供 bottle。
+- Pull Request 会在 Intel macOS、Apple Silicon macOS 和 Linux 上测试。
 
 ## 自定义语言支持
 
@@ -71,7 +72,7 @@ args = %W[
   --disable-tests
   --prefix=#{prefix}
   --libdir=#{lib}
-  --with-openssl=#{Formula["openssl@3"].opt_prefix}
+  --with-openssl=#{formula_opt_prefix("openssl@3")}
   --without-erlang
   --without-haskell
   --without-java

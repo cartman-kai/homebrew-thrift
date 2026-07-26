@@ -51,6 +51,7 @@ brew install thrift@0.11
 - Supported historical releases currently cover `thrift@0.9` through `thrift@0.23`.
 - Recent maintenance work focused on adding missing archived versions, fixing patch URLs, and switching old source downloads to `archive.apache.org`.
 - Older formulae are largely copied from `homebrew-core` history and adjusted for source builds without bottles.
+- Pull requests are tested on Intel macOS, Apple Silicon macOS, and Linux.
 
 ## Customizing Language Support
 
@@ -71,7 +72,7 @@ args = %W[
   --disable-tests
   --prefix=#{prefix}
   --libdir=#{lib}
-  --with-openssl=#{Formula["openssl@3"].opt_prefix}
+  --with-openssl=#{formula_opt_prefix("openssl@3")}
   --without-erlang
   --without-haskell
   --without-java
