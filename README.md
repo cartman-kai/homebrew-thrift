@@ -8,16 +8,22 @@ These formulae are built from source. Bottles are not provided.
 
 ## Installation
 
+Homebrew 6.0 and later require non-official taps to be trusted before their formulae can be loaded:
+
+```bash
+brew tap cartman-kai/thrift
+brew trust cartman-kai/thrift
+```
+
 Install a formula directly:
 
 ```bash
 brew install cartman-kai/thrift/<formula>
 ```
 
-Or tap the repository first, then install a formula:
+After tapping and trusting the repository, you can also install by formula name:
 
 ```bash
-brew tap cartman-kai/thrift
 brew install thrift@0.11
 ```
 
@@ -37,11 +43,12 @@ brew install thrift@0.11
 - `thrift@0.20`
 - `thrift@0.21`
 - `thrift@0.22`
+- `thrift@0.23`
 
 ## Maintenance Notes
 
-- Latest version in this tap: `thrift@0.22`.
-- Supported historical releases currently cover `thrift@0.9` through `thrift@0.22`.
+- Latest version in this tap: `thrift@0.23`.
+- Supported historical releases currently cover `thrift@0.9` through `thrift@0.23`.
 - Recent maintenance work focused on adding missing archived versions, fixing patch URLs, and switching old source downloads to `archive.apache.org`.
 - Older formulae are largely copied from `homebrew-core` history and adjusted for source builds without bottles.
 

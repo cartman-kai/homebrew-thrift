@@ -8,16 +8,22 @@
 
 ## 安装方法
 
+从 Homebrew 6.0 开始，加载非官方 tap 的 formula 前需要先信任该 tap：
+
+```bash
+brew tap cartman-kai/thrift
+brew trust cartman-kai/thrift
+```
+
 可以直接安装指定 formula：
 
 ```bash
 brew install cartman-kai/thrift/<formula>
 ```
 
-也可以先添加 tap，再安装：
+添加并信任 tap 后，也可以直接使用 formula 名称安装：
 
 ```bash
-brew tap cartman-kai/thrift
 brew install thrift@0.11
 ```
 
@@ -37,11 +43,12 @@ brew install thrift@0.11
 - `thrift@0.20`
 - `thrift@0.21`
 - `thrift@0.22`
+- `thrift@0.23`
 
 ## 维护说明
 
-- 当前最新版本为 `thrift@0.22`。
-- 目前维护的历史版本范围为 `thrift@0.9` 到 `thrift@0.22`。
+- 当前最新版本为 `thrift@0.23`。
+- 目前维护的历史版本范围为 `thrift@0.9` 到 `thrift@0.23`。
 - 最近的维护重点主要是补齐历史版本、修复 patch URL，以及将旧版本源码地址切换到 `archive.apache.org`。
 - 大部分旧 formula 来自 `homebrew-core` 历史版本，并已调整为仅支持源码安装、不提供 bottle。
 
