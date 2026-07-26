@@ -57,6 +57,17 @@ class ThriftAT012 < Formula
   end
 
   test do
-    system "#{bin}/thrift", "--version"
+    (testpath/"test.thrift").write <<~THRIFT
+      service MultiplicationService {
+        i32 multiply(1:i32 x, 2:i32 y),
+      }
+    THRIFT
+
+    system bin/"thrift", "-r", "--gen", "cpp", "test.thrift"
+
+    system ENV.cxx, "-std=c++14", "gen-cpp/MultiplicationService.cpp",
+      "gen-cpp/MultiplicationService_server.skeleton.cpp",
+      "-I#{include}",
+      "-L#{lib}", "-lthrift"
   end
 end

@@ -51,6 +51,10 @@ export PATH="$(brew --prefix thrift@0.11)/bin:$PATH"
 - `thrift@0.22`
 - `thrift@0.23`
 
+## C++ Compatibility
+
+The C++ libraries and generated-code tests use C++14 because the current Boost dependency requires it. Projects that consume the installed Thrift headers should use a C++14-compatible compiler and compile generated C++ code with `-std=c++14` or later. CI explicitly verifies C++14.
+
 ## Maintenance Notes
 
 - Latest version in this tap: `thrift@0.23`.

@@ -51,6 +51,10 @@ export PATH="$(brew --prefix thrift@0.11)/bin:$PATH"
 - `thrift@0.22`
 - `thrift@0.23`
 
+## C++ 兼容性
+
+由于当前 Boost 依赖要求 C++14，C++ library 和生成代码测试均使用 C++14。使用已安装 Thrift 头文件的项目应采用支持 C++14 的编译器，并通过 `-std=c++14` 或更高标准编译生成的 C++ 代码。CI 会明确验证 C++14。
+
 ## 维护说明
 
 - 当前最新版本为 `thrift@0.23`。
