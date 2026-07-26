@@ -1,17 +1,14 @@
 class ThriftAT011 < Formula
   desc "Framework for scalable cross-language services development"
   homepage "https://thrift.apache.org/"
-  url "https://archive.apache.org/dist/thrift/0.11.0/thrift-0.11.0.tar.gz"
+  url "https://www.apache.org/dyn/closer.lua?path=thrift/0.11.0/thrift-0.11.0.tar.gz"
+  mirror "https://archive.apache.org/dist/thrift/0.11.0/thrift-0.11.0.tar.gz"
   sha256 "c4ad38b6cb4a3498310d405a91fef37b9a8e79a50cd0968148ee2524d2fa60c2"
   license "Apache-2.0"
 
-  bottle do
-    rebuild 1
-  end
+  head "https://github.com/apache/thrift.git"
 
-  head do
-    url "https://github.com/apache/thrift.git"
-  end
+  keg_only :versioned_formula
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -22,6 +19,12 @@ class ThriftAT011 < Formula
   depends_on "libevent"
   depends_on "openssl@3"
 
+  # Fix -flat_namespace being used on Big Sur and later.
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/homebrew-core/1cf441a0/Patches/libtool/configure-big_sur.diff"
+    sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
+  end
+
   def install
     system "./bootstrap.sh" unless build.stable?
 
@@ -30,8 +33,8 @@ class ThriftAT011 < Formula
       --disable-tests
       --prefix=#{prefix}
       --libdir=#{lib}
-      --with-boost=#{Formula["boost"].opt_prefix}
-      --with-openssl=#{Formula["openssl@3"].opt_prefix}
+      --with-boost=#{formula_opt_prefix("boost")}
+      --with-openssl=#{formula_opt_prefix("openssl@3")}
       --without-erlang
       --without-haskell
       --without-java
@@ -43,7 +46,7 @@ class ThriftAT011 < Formula
       --without-swift
     ]
 
-    ENV.cxx11 if ENV.compiler == :clang
+    ENV.append "CXXFLAGS", "-std=c++14"
 
     # Don't install extensions to /usr:
     ENV["PY_PREFIX"] = prefix
@@ -65,9 +68,9 @@ class ThriftAT011 < Formula
 
     system "#{bin}/thrift", "-r", "--gen", "cpp", "test.thrift"
 
-    system ENV.cxx, "-std=c++11", "gen-cpp/MultiplicationService.cpp",
+    system ENV.cxx, "-std=c++14", "gen-cpp/MultiplicationService.cpp",
       "gen-cpp/MultiplicationService_server.skeleton.cpp",
-      "-I#{include}/include",
+      "-I#{include}",
       "-L#{lib}", "-lthrift"
   end
 end

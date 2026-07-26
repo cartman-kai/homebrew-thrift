@@ -1,17 +1,14 @@
 class ThriftAT010 < Formula
   desc "Framework for scalable cross-language services development"
   homepage "https://thrift.apache.org/"
-  url "https://archive.apache.org/dist/thrift/0.10.0/thrift-0.10.0.tar.gz"
+  url "https://www.apache.org/dyn/closer.lua?path=thrift/0.10.0/thrift-0.10.0.tar.gz"
+  mirror "https://archive.apache.org/dist/thrift/0.10.0/thrift-0.10.0.tar.gz"
   sha256 "2289d02de6e8db04cbbabb921aeb62bfe3098c4c83f36eec6c31194301efa10b"
   license "Apache-2.0"
 
-  bottle do
-    rebuild 1
-  end
+  head "https://github.com/apache/thrift.git", branch: "0.10.0"
 
-  head do
-    url "https://github.com/apache/thrift.git", branch: "0.10.0"
-  end
+  keg_only :versioned_formula
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -23,15 +20,23 @@ class ThriftAT010 < Formula
   depends_on "openssl@3"
 
   def install
-    system "./bootstrap.sh" unless build.stable?
+    if build.stable?
+      # Fix -flat_namespace being used on newer macOS releases.
+      inreplace "configure", "case ${MACOSX_DEPLOYMENT_TARGET-10.0},$host in",
+        "case ${MACOSX_DEPLOYMENT_TARGET},$host in"
+      inreplace "configure", "10.[012]*)", "10.[012],*|,*powerpc*)"
+      inreplace "configure", "10.*)", "*)"
+    else
+      system "./bootstrap.sh"
+    end
 
     args = %W[
       --disable-debug
       --disable-tests
       --prefix=#{prefix}
       --libdir=#{lib}
-      --with-boost=no
-      --with-openssl=#{Formula["openssl@3"].opt_prefix}
+      --with-boost=#{formula_opt_prefix("boost")}
+      --with-openssl=#{formula_opt_prefix("openssl@3")}
       --without-erlang
       --without-haskell
       --without-java
@@ -43,7 +48,7 @@ class ThriftAT010 < Formula
       --without-swift
     ]
 
-    ENV.cxx11 if ENV.compiler == :clang
+    ENV.append "CXXFLAGS", "-std=c++14"
 
     # Don't install extensions to /usr:
     ENV["PY_PREFIX"] = prefix
@@ -65,9 +70,9 @@ class ThriftAT010 < Formula
 
     system "#{bin}/thrift", "-r", "--gen", "cpp", "test.thrift"
 
-    system ENV.cxx, "-std=c++11", "gen-cpp/MultiplicationService.cpp",
+    system ENV.cxx, "-std=c++14", "gen-cpp/MultiplicationService.cpp",
       "gen-cpp/MultiplicationService_server.skeleton.cpp",
-      "-I#{include}/include",
+      "-I#{include}",
       "-L#{lib}", "-lthrift"
   end
 end

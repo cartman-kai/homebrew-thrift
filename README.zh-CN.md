@@ -8,23 +8,35 @@
 
 ## 安装方法
 
+从 Homebrew 6.0 开始，加载非官方 tap 的 formula 前需要先信任该 tap：
+
+```bash
+brew tap cartman-kai/thrift
+brew trust cartman-kai/thrift
+```
+
 可以直接安装指定 formula：
 
 ```bash
 brew install cartman-kai/thrift/<formula>
 ```
 
-也可以先添加 tap，再安装：
+添加并信任 tap 后，也可以直接使用 formula 名称安装：
 
 ```bash
-brew tap cartman-kai/thrift
 brew install thrift@0.11
+```
+
+所有 formula 均为 keg-only，以便多个 Thrift 版本共存。需要使用某个版本时，将其加入 `PATH`：
+
+```bash
+export PATH="$(brew --prefix thrift@0.11)/bin:$PATH"
 ```
 
 ## 支持的 Formula
 
 - `thrift@0.9` (`0.9.3.1`)
-- `thrift@0.10`（默认不构建 C++ library）
+- `thrift@0.10`
 - `thrift@0.11`
 - `thrift@0.12`
 - `thrift@0.13`
@@ -37,13 +49,19 @@ brew install thrift@0.11
 - `thrift@0.20`
 - `thrift@0.21`
 - `thrift@0.22`
+- `thrift@0.23`
+
+## C++ 兼容性
+
+由于当前 Boost 依赖要求 C++14，C++ library 和生成代码测试均使用 C++14。使用已安装 Thrift 头文件的项目应采用支持 C++14 的编译器，并通过 `-std=c++14` 或更高标准编译生成的 C++ 代码。CI 会明确验证 C++14。
 
 ## 维护说明
 
-- 当前最新版本为 `thrift@0.22`。
-- 目前维护的历史版本范围为 `thrift@0.9` 到 `thrift@0.22`。
+- 当前最新版本为 `thrift@0.23`。
+- 目前维护的历史版本范围为 `thrift@0.9` 到 `thrift@0.23`。
 - 最近的维护重点主要是补齐历史版本、修复 patch URL，以及将旧版本源码地址切换到 `archive.apache.org`。
 - 大部分旧 formula 来自 `homebrew-core` 历史版本，并已调整为仅支持源码安装、不提供 bottle。
+- 修改过的 formula 会在 Apple Silicon macOS 上从源码构建；新增 formula 还会在 Intel macOS 和 Linux 上测试。
 
 ## 自定义语言支持
 
@@ -64,7 +82,7 @@ args = %W[
   --disable-tests
   --prefix=#{prefix}
   --libdir=#{lib}
-  --with-openssl=#{Formula["openssl@3"].opt_prefix}
+  --with-openssl=#{formula_opt_prefix("openssl@3")}
   --without-erlang
   --without-haskell
   --without-java
@@ -73,29 +91,6 @@ args = %W[
   --without-swift
 ]
 ```
-
-## 已知问题
-
-`thrift@0.10` 在启用基于 Boost 的 C++ 支持时，可能会在 Linux 或 macOS Monterey 上构建失败。
-
-在 Linux 上，链接器可能无法解析 `boost::math::signbit`：
-
-```text
-/usr/bin/ld: /tmp/thriftA0.10-20210726-11963-gdbcaw/thrift-0.10.0/lib/cpp/.libs/libthrift-0.10.0.so: undefined reference to `int boost::math::signbit<double>(double)'
-```
-
-在 macOS Monterey 上，生成后的代码可能因为缺失符号而编译失败：
-
-```text
-../../compiler/cpp/thrift --gen cpp -r ../../tutorial/tutorial.thrift
-dyld[90108]: symbol not found in flat namespace '_ZN5boost4math7signbitIdEEiT'
-make[3]: *** [gen-cpp/shared_types.cpp] Abort trap: 6
-make[2]: *** [all-recursive] Error 1
-make[1]: *** [all-recursive] Error 1
-make: *** [all] Error 2
-```
-
-这更像是工具链或 `libtool` 兼容性问题。实际使用中，不建议将 `thrift@0.10` 用于 C++ 项目。
 
 ## 参考文档
 

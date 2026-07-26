@@ -1,28 +1,29 @@
-class ThriftAT017 < Formula
+class ThriftAT023 < Formula
   desc "Framework for scalable cross-language services development"
   homepage "https://thrift.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=thrift/0.17.0/thrift-0.17.0.tar.gz"
-  mirror "https://archive.apache.org/dist/thrift/0.17.0/thrift-0.17.0.tar.gz"
-  sha256 "b272c1788bb165d99521a2599b31b97fa69e5931d099015d91ae107a0b0cc58f"
+  url "https://www.apache.org/dyn/closer.lua?path=thrift/0.23.0/thrift-0.23.0.tar.gz"
+  mirror "https://archive.apache.org/dist/thrift/0.23.0/thrift-0.23.0.tar.gz"
+  sha256 "1859d932d2ae1f13d16c5a196931208c116310a5ff50f2bfd11d3db03be8f46f"
   license "Apache-2.0"
+  compatibility_version 2
 
-  head "https://github.com/apache/thrift.git"
+  head do
+    url "https://github.com/apache/thrift.git", branch: "master"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+    depends_on "pkgconf" => :build
+  end
 
   keg_only :versioned_formula
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
   depends_on "bison" => :build
   depends_on "boost" => [:build, :test]
-  depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
   depends_on "openssl@3"
-  uses_from_macos "zlib"
 
-  # Fix -flat_namespace being used on Big Sur and later.
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/homebrew-core/1cf441a0/Patches/libtool/configure-big_sur.diff"
-    sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
+  on_linux do
+    depends_on "zlib-ng-compat"
   end
 
   def install
@@ -69,13 +70,13 @@ class ThriftAT017 < Formula
   end
 
   test do
-    (testpath/"test.thrift").write <<~EOS
+    (testpath/"test.thrift").write <<~THRIFT
       service MultiplicationService {
         i32 multiply(1:i32 x, 2:i32 y),
       }
-    EOS
+    THRIFT
 
-    system "#{bin}/thrift", "-r", "--gen", "cpp", "test.thrift"
+    system bin/"thrift", "-r", "--gen", "cpp", "test.thrift"
 
     system ENV.cxx, "-std=c++14", "gen-cpp/MultiplicationService.cpp",
       "gen-cpp/MultiplicationService_server.skeleton.cpp",

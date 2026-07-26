@@ -2,28 +2,125 @@ name: tests
 
 on:
   push:
+    branches:
+      - main
   pull_request:
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
-  audit-and-test:
-    runs-on: macos-14
+  lint:
+    runs-on: macos-26
+    outputs:
+      changed-formulae: ${{ steps.formulae.outputs.changed }}
+      added-formulae: ${{ steps.formulae.outputs.added }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
       - name: Set up Homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: Homebrew/actions/setup-homebrew@df4b09108a1de9d6f995fe68f302b3f68bd6d2ef # 2026.07.20.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Tap repository
-        run: brew tap --custom-remote cartman-kai/thrift "${GITHUB_WORKSPACE}"
+      - name: Check every formula's Ruby syntax
+        run: |
+          for formula in Formula/*.rb; do
+            brew ruby -- -c "$formula"
+          done
 
-      - name: Check Ruby syntax
-        run: ruby -c Formula/*.rb
-
-      - name: Audit formulae
+      - name: Audit every formula
         run: |
           for formula in Formula/*.rb; do
             name="$(basename "$formula" .rb)"
             brew audit --strict --formula "cartman-kai/thrift/${name}"
           done
+
+      - name: Check tap syntax
+        run: brew test-bot --only-tap-syntax
+
+      - name: Detect formulae to build
+        id: formulae
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            changed_files="$(git diff --name-only --diff-filter=AM "$BASE_SHA" "$HEAD_SHA" -- Formula)"
+            added_files="$(git diff --name-only --diff-filter=A "$BASE_SHA" "$HEAD_SHA" -- Formula)"
+          elif [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            changed_files="$(find Formula -name '*.rb' -type f | sort)"
+            added_files="$changed_files"
+          else
+            changed_files=""
+            added_files=""
+          fi
+
+          changed="$(
+            printf '%s\n' "$changed_files" |
+              sed -n 's#^Formula/\(.*\)\.rb$#\1#p' |
+              brew ruby -rjson -e 'puts JSON.generate(STDIN.each_line(chomp: true).reject(&:empty?))'
+          )"
+          added="$(
+            printf '%s\n' "$added_files" |
+              sed -n 's#^Formula/\(.*\)\.rb$#\1#p' |
+              brew ruby -rjson -e 'puts JSON.generate(STDIN.each_line(chomp: true).reject(&:empty?))'
+          )"
+
+          echo "changed=${changed}" >> "$GITHUB_OUTPUT"
+          echo "added=${added}" >> "$GITHUB_OUTPUT"
+
+  build-macos:
+    name: Build ${{ matrix.formula }} (macos-26)
+    needs: lint
+    if: needs.lint.outputs.changed-formulae != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        formula: ${{ fromJSON(needs.lint.outputs.changed-formulae) }}
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@df4b09108a1de9d6f995fe68f302b3f68bd6d2ef # 2026.07.20.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build from source
+        run: brew install --build-from-source "cartman-kai/thrift/${{ matrix.formula }}"
+
+      - name: Test formula
+        run: brew test "cartman-kai/thrift/${{ matrix.formula }}"
+
+  build-added-platforms:
+    name: Build ${{ matrix.formula }} (${{ matrix.os }})
+    needs: lint
+    if: needs.lint.outputs.added-formulae != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        formula: ${{ fromJSON(needs.lint.outputs.added-formulae) }}
+        os: [macos-15-intel, ubuntu-latest]
+        include:
+          - os: ubuntu-latest
+            container:
+              image: ghcr.io/homebrew/brew:main
+              options: --privileged
+    runs-on: ${{ matrix.os }}
+    container: ${{ fromJSON(toJSON(matrix.container)) }} # zizmor: ignore[unpinned-images]
+    timeout-minutes: 120
+    steps:
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@df4b09108a1de9d6f995fe68f302b3f68bd6d2ef # 2026.07.20.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build from source
+        run: brew install --build-from-source "cartman-kai/thrift/${{ matrix.formula }}"
+
+      - name: Test formula
+        run: brew test "cartman-kai/thrift/${{ matrix.formula }}"

@@ -1,17 +1,10 @@
 class ThriftAT021 < Formula
   desc "Framework for scalable cross-language services development"
   homepage "https://thrift.apache.org/"
+  url "https://www.apache.org/dyn/closer.lua?path=thrift/0.21.0/thrift-0.21.0.tar.gz"
+  mirror "https://archive.apache.org/dist/thrift/0.21.0/thrift-0.21.0.tar.gz"
+  sha256 "9a24f3eba9a4ca493602226c16d8c228037db3b9291c6fc4019bfe3bd39fc67c"
   license "Apache-2.0"
-
-  stable do
-    url "https://www.apache.org/dyn/closer.lua?path=thrift/0.21.0/thrift-0.21.0.tar.gz"
-    mirror "https://archive.apache.org/dist/thrift/0.21.0/thrift-0.21.0.tar.gz"
-    sha256 "9a24f3eba9a4ca493602226c16d8c228037db3b9291c6fc4019bfe3bd39fc67c"
-  end
-
-  bottle do
-    rebuild 1
-  end
 
   head do
     url "https://github.com/apache/thrift.git", branch: "master"
@@ -22,10 +15,18 @@ class ThriftAT021 < Formula
     depends_on "pkg-config" => :build
   end
 
+  keg_only :versioned_formula
+
   depends_on "bison" => :build
   depends_on "boost" => [:build, :test]
   depends_on "openssl@3"
   uses_from_macos "zlib"
+
+  # Fix -flat_namespace being used on Big Sur and later.
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/homebrew-core/1cf441a0/Patches/libtool/configure-big_sur.diff"
+    sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
+  end
 
   def install
     system "./bootstrap.sh" unless build.stable?
@@ -35,7 +36,7 @@ class ThriftAT021 < Formula
       --disable-tests
       --prefix=#{prefix}
       --libdir=#{lib}
-      --with-openssl=#{Formula["openssl@3"].opt_prefix}
+      --with-openssl=#{formula_opt_prefix("openssl@3")}
       --without-java
       --without-kotlin
       --without-python
@@ -57,7 +58,7 @@ class ThriftAT021 < Formula
       --without-swift
     ]
 
-    ENV.cxx11 if ENV.compiler == :clang
+    ENV.append "CXXFLAGS", "-std=c++14"
 
     # Don't install extensions to /usr:
     ENV["PY_PREFIX"] = prefix
@@ -79,9 +80,9 @@ class ThriftAT021 < Formula
 
     system "#{bin}/thrift", "-r", "--gen", "cpp", "test.thrift"
 
-    system ENV.cxx, "-std=c++11", "gen-cpp/MultiplicationService.cpp",
+    system ENV.cxx, "-std=c++14", "gen-cpp/MultiplicationService.cpp",
       "gen-cpp/MultiplicationService_server.skeleton.cpp",
-      "-I#{include}/include",
+      "-I#{include}",
       "-L#{lib}", "-lthrift"
   end
 end

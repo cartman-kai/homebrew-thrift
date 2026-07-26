@@ -8,23 +8,35 @@ These formulae are built from source. Bottles are not provided.
 
 ## Installation
 
+Homebrew 6.0 and later require non-official taps to be trusted before their formulae can be loaded:
+
+```bash
+brew tap cartman-kai/thrift
+brew trust cartman-kai/thrift
+```
+
 Install a formula directly:
 
 ```bash
 brew install cartman-kai/thrift/<formula>
 ```
 
-Or tap the repository first, then install a formula:
+After tapping and trusting the repository, you can also install by formula name:
 
 ```bash
-brew tap cartman-kai/thrift
 brew install thrift@0.11
+```
+
+All formulae are keg-only so that multiple Thrift versions can coexist. Add the selected version to `PATH` when needed:
+
+```bash
+export PATH="$(brew --prefix thrift@0.11)/bin:$PATH"
 ```
 
 ## Supported Formulae
 
 - `thrift@0.9` (`0.9.3.1`)
-- `thrift@0.10` (built without the C++ library by default)
+- `thrift@0.10`
 - `thrift@0.11`
 - `thrift@0.12`
 - `thrift@0.13`
@@ -37,13 +49,19 @@ brew install thrift@0.11
 - `thrift@0.20`
 - `thrift@0.21`
 - `thrift@0.22`
+- `thrift@0.23`
+
+## C++ Compatibility
+
+The C++ libraries and generated-code tests use C++14 because the current Boost dependency requires it. Projects that consume the installed Thrift headers should use a C++14-compatible compiler and compile generated C++ code with `-std=c++14` or later. CI explicitly verifies C++14.
 
 ## Maintenance Notes
 
-- Latest version in this tap: `thrift@0.22`.
-- Supported historical releases currently cover `thrift@0.9` through `thrift@0.22`.
+- Latest version in this tap: `thrift@0.23`.
+- Supported historical releases currently cover `thrift@0.9` through `thrift@0.23`.
 - Recent maintenance work focused on adding missing archived versions, fixing patch URLs, and switching old source downloads to `archive.apache.org`.
 - Older formulae are largely copied from `homebrew-core` history and adjusted for source builds without bottles.
+- Changed formulae are built from source on Apple Silicon macOS. Newly added formulae are also tested on Intel macOS and Linux.
 
 ## Customizing Language Support
 
@@ -64,7 +82,7 @@ args = %W[
   --disable-tests
   --prefix=#{prefix}
   --libdir=#{lib}
-  --with-openssl=#{Formula["openssl@3"].opt_prefix}
+  --with-openssl=#{formula_opt_prefix("openssl@3")}
   --without-erlang
   --without-haskell
   --without-java
@@ -73,29 +91,6 @@ args = %W[
   --without-swift
 ]
 ```
-
-## Known Issue
-
-`thrift@0.10` may fail when built with Boost-based C++ support on Linux or on macOS Monterey.
-
-On Linux, the linker may fail to resolve `boost::math::signbit`:
-
-```text
-/usr/bin/ld: /tmp/thriftA0.10-20210726-11963-gdbcaw/thrift-0.10.0/lib/cpp/.libs/libthrift-0.10.0.so: undefined reference to `int boost::math::signbit<double>(double)'
-```
-
-On macOS Monterey, the generated code build may fail with a missing symbol:
-
-```text
-../../compiler/cpp/thrift --gen cpp -r ../../tutorial/tutorial.thrift
-dyld[90108]: symbol not found in flat namespace '_ZN5boost4math7signbitIdEEiT'
-make[3]: *** [gen-cpp/shared_types.cpp] Abort trap: 6
-make[2]: *** [all-recursive] Error 1
-make[1]: *** [all-recursive] Error 1
-make: *** [all] Error 2
-```
-
-This appears to be a toolchain or libtool compatibility issue. In practice, `thrift@0.10` is not recommended for C++ projects.
 
 ## Documentation
 
