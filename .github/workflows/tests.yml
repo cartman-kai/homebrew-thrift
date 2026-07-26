@@ -29,7 +29,7 @@ jobs:
       - name: Check every formula's Ruby syntax
         run: |
           for formula in Formula/*.rb; do
-            brew ruby -c "$formula"
+            brew ruby -- -c "$formula"
           done
 
       - name: Audit every formula
