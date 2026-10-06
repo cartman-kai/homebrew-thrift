@@ -97,6 +97,8 @@ args = %W[
   --without-ruby
   --without-swift
 ]
+
+system "./configure", *args
 ```
 
 ## Documentation
