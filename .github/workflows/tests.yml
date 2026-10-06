@@ -119,6 +119,21 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Unlink preinstalled OpenSSL 1.1
+        if: matrix.os == 'macos-15-intel'
+        run: |
+          # Intel runner 预装的旧版 OpenSSL 会与 openssl@3 的全局链接冲突。
+          if brew list --formula --versions openssl@1.1 >/dev/null 2>&1; then
+            brew unlink openssl@1.1
+          fi
+
+          # brew unlink 不会移除 runner 创建的经由 opt 目录指向旧版本的链接。
+          brew_prefix="$(brew --prefix)"
+          openssl_bin="${brew_prefix}/bin/openssl"
+          if [[ -L "$openssl_bin" && "$(readlink "$openssl_bin")" == "${brew_prefix}/opt/openssl@1.1/bin/openssl" ]]; then
+            rm -v "$openssl_bin"
+          fi
+
       - name: Build from source
         run: brew install --build-from-source "cartman-kai/thrift/${{ matrix.formula }}"
 

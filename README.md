@@ -27,6 +27,12 @@ After tapping and trusting the repository, you can also install by formula name:
 brew install thrift@0.11
 ```
 
+With Homebrew 7, installation may try to link a versioned formula automatically. To keep an existing `thrift` command when installing another version, use `--skip-link`:
+
+```bash
+brew install --skip-link cartman-kai/thrift/thrift@0.24
+```
+
 All formulae are keg-only so that multiple Thrift versions can coexist. Add the selected version to `PATH` when needed:
 
 ```bash
@@ -50,6 +56,7 @@ export PATH="$(brew --prefix thrift@0.11)/bin:$PATH"
 - `thrift@0.21`
 - `thrift@0.22`
 - `thrift@0.23`
+- `thrift@0.24`
 
 ## C++ Compatibility
 
@@ -57,8 +64,8 @@ The C++ libraries and generated-code tests use C++14 because the current Boost d
 
 ## Maintenance Notes
 
-- Latest version in this tap: `thrift@0.23`.
-- Supported historical releases currently cover `thrift@0.9` through `thrift@0.23`.
+- Latest version in this tap: `thrift@0.24`.
+- Supported historical releases currently cover `thrift@0.9` through `thrift@0.24`.
 - Recent maintenance work focused on adding missing archived versions, fixing patch URLs, and switching old source downloads to `archive.apache.org`.
 - Older formulae are largely copied from `homebrew-core` history and adjusted for source builds without bottles.
 - Changed formulae are built from source on Apple Silicon macOS. Newly added formulae are also tested on Intel macOS and Linux.
@@ -90,6 +97,8 @@ args = %W[
   --without-ruby
   --without-swift
 ]
+
+system "./configure", *args
 ```
 
 ## Documentation
